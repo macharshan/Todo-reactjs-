@@ -1,7 +1,7 @@
 import React, {useContext, useId, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import { addTodo, updateTodo } from '../features/Todo/todoSlice'
-import UserContext from '../context/userContext'
+import UserContext from '../context/UserContext.js'
 
 function TodoForm() {
     const {updateStatus, setUpdateStatus, targetTodo, setTargetTodo} = useContext(UserContext)
