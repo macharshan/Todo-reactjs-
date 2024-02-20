@@ -1,7 +1,7 @@
 import React, { useContext, useId } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeTodo, toggleTodo, toggleAll, removeAll, updateTodoStat } from '../features/Todo/todoSlice'
-import UserContext from '../context/userContext'
+import UserContext from '../context/userContext.js'
 
 function TodosList() {
   const {updateStatus, setUpdateStatus, setTargetTodo} = useContext(UserContext)
