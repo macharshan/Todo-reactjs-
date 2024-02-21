@@ -16,14 +16,21 @@ function TodosList() {
       <div className='w-full p-2 text-lg bg-zinc-900 flex flex-wrap justify-between items-center gap-4'>
         <p className='ml-4 hover:underline'>
           <input type="checkbox" id={id} onChange={()=>dispatch(toggleAll())} disabled={updateStatus} className='cursor-pointer'/> 
-          <label htmlFor={id} className='ml-2 text-red-500 hover:underline decoration-red-600 cursor-pointer'>Select all as completed</label>
+          <label htmlFor={id} className='ml-2 text-red-500 hover:underline decoration-red-600 cursor-pointer'>mark all as completed</label>
         </p>
         <button className='p-2 text-red-500 hover:underline decoration-red-600 cursor-pointer' onClick={()=>dispatch(removeAll())}>Delete All</button>
       </div>): null
     }
       {todos.map((todo)=>(
         <ul className='w-full p-4 text-lg bg-stone-300 rounded-lg flex flex-wrap justify-center items-center gap-4' key={todo.id} >
-            <li className='basis-4 ml-4'><input type="checkbox" checked={todo.completed} onChange={()=>dispatch(toggleTodo(todo))} disabled={updateStatus && todo.updateStatus}/></li>
+            <li className='basis-4 ml-4'>
+              <input 
+                type="checkbox" 
+                checked={todo.completed} 
+                onChange={()=>dispatch(toggleTodo(todo))} 
+                disabled={(updateStatus && todo.updateStatus) || (!todo.updateStatus && updateStatus)}
+              />
+            </li>
             <li className='grow'><h1 className={`${(todo.completed === true)? "line-through": "" }`}>{todo.text}</h1></li>
             <li><button className={`basis-4 mr-4 ${(!todo.updateStatus && updateStatus)? "cursor-not-allowed": "cursor-pointer"}`} 
                   onClick={()=>{
