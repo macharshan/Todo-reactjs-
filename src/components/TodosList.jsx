@@ -4,7 +4,7 @@ import { removeTodo, toggleTodo, toggleAll, removeAll, updateTodoStat } from '..
 import UserContext from '../context/UserContext.js'
 
 function TodosList() {
-  const {updateStatus, setUpdateStatus, setTargetTodo} = useContext(UserContext)
+  const {updateStatus, setUpdateStatus, setTargetTodo,setError} = useContext(UserContext)
   const id = useId()
 
   const todos = useSelector(state => state.todos)
@@ -15,10 +15,20 @@ function TodosList() {
     {(todos.length > 0)? (
       <div className='w-full p-2 text-lg bg-zinc-900 flex flex-wrap justify-between items-center gap-4'>
         <p className='ml-4 hover:underline'>
-          <input type="checkbox" id={id} onChange={()=>dispatch(toggleAll())} disabled={updateStatus} className='cursor-pointer'/> 
+          <input 
+          type="checkbox" 
+          id={id} 
+          onChange={()=>{
+            dispatch(toggleAll())
+            setError("")}} 
+          disabled={updateStatus} 
+          className='cursor-pointer'/> 
           <label htmlFor={id} className='ml-2 text-red-500 hover:underline decoration-red-600 cursor-pointer'>mark all as completed</label>
         </p>
-        <button className='p-2 text-red-500 hover:underline decoration-red-600 cursor-pointer' onClick={()=>dispatch(removeAll())}>Delete All</button>
+        <button className='p-2 text-red-500 hover:underline decoration-red-600 cursor-pointer' onClick={()=>{
+          dispatch(removeAll())
+          setUpdateStatus(!updateStatus)
+          setError("")}}>Delete All</button>
       </div>): null
     }
       {todos.map((todo)=>(
@@ -37,6 +47,7 @@ function TodosList() {
                     dispatch(updateTodoStat(todo))
                     setUpdateStatus(!updateStatus);
                     setTargetTodo(todo);
+                    setError("")
                     }
                   } 
                   hidden={(todo.updateStatus && updateStatus) || todo.completed}
@@ -45,11 +56,14 @@ function TodosList() {
                   onClick={()=>{
                     dispatch(updateTodoStat(todo))
                     setUpdateStatus(!updateStatus)
-                    setTargetTodo({})}}
+                    setTargetTodo({})
+                    setError("")}}
                   hidden={!(updateStatus && todo.updateStatus)}
                   >❌</button></li>
             <li><button className={`basis-4 mr-4 ${(!todo.updateStatus && updateStatus)? "cursor-not-allowed": "cursor-pointer"}`} 
-                  onClick={()=>dispatch(removeTodo(todo))} 
+                  onClick={()=>{
+                    dispatch(removeTodo(todo))
+                    setError("")}} 
                   hidden={updateStatus && todo.updateStatus}
                   disabled={!todo.completed && updateStatus}
                   >🗑</button></li>
